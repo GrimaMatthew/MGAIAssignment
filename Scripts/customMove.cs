@@ -19,6 +19,7 @@ public class customMove : MonoBehaviour
 
     void Start()
     {
+        AstarPath.active.Scan();
         target = GameObject.FindGameObjectWithTag("Target").transform;
         
         print("Moveeeeeeee");
