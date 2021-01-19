@@ -69,6 +69,7 @@ public class customMove : MonoBehaviour
                 while (Vector3.Distance(t.position, posns[counter]) >= 0.5f) // check the position of the ai and using the counter as an 
                 {                                                            // index we will check  the positions of the two objects.
                                                                              // Once the objects are 0.5f away the while loop will stop
+                    print(posns[counter] + "counterrrr");
 
                     t.position = Vector3.MoveTowards(t.position, posns[counter], 1f); // Move towards moves the Ai towards the points(Vector) in the list posns
                     yield return new WaitForSeconds(0.2f);// the wait allows us to move one box at a time. 

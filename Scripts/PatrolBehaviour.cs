@@ -16,24 +16,38 @@ public class PatrolBehaviour : MonoBehaviour
 
 
 
+
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(updateGridGraph());
+       
 
         seeker = GetComponent<Seeker>();
 
 
-        //The path to follow between our AI and our Target is set here
-        pathToFollow = seeker.StartPath(transform.position, waypoint[9].position);
 
 
-        //moving the greenbox. runs indefinetly 
+        pathToFollow = seeker.StartPath(transform.position, waypoint[1].position);
+
+
+
+
+        print("Transforms: " + transform.position + "Waypoints: " + waypoint[9].position);
+
+     
+
+        StartCoroutine(updateGridGraph());
+
         StartCoroutine(movePlayer());
 
 
 
     }
+
+
+
+ 
 
 
     IEnumerator updateGridGraph()
@@ -58,6 +72,7 @@ public class PatrolBehaviour : MonoBehaviour
 
         //Starting position , the list of positions & a boolean paramtere stating if the path is looped
         StartCoroutine(movePlayer(this.transform, waypoint, true));
+        
 
 
         yield return null;
@@ -66,28 +81,44 @@ public class PatrolBehaviour : MonoBehaviour
 
 
 
+
    
 
     IEnumerator movePlayer(Transform t, List<Transform> points, bool loop)
     {
-
-        print("Tomatoeesss");
+        List<Vector3> posns = pathToFollow.vectorPath;
+        List<Transform> forwardpoints = points; // List of waypoints
+        print("In Move Player");
+        
         if (loop) // need to run idefinitely 
         {
 
             while (true)
             {
-                List<Transform> forwardpoints = points;
-
-                foreach (Transform p in forwardpoints)
+                for (int count = 0; count <= posns.Count; count++)
                 {
-                    while (Vector3.Distance(t.position, p.position) > 0.5f)
-                    {
-                        t.position = Vector3.MoveTowards(t.position, p.position, 1f);
-                        Debug.Log(p.position);/**/
-                        pathToFollow = seeker.StartPath(t.position, waypoint[9].position);
-                        yield return new WaitForSeconds(0.2f);
+                 
+                    foreach (Transform p in forwardpoints)
+                {
+
+                    
+
+                        print(p+": p position");
+
+                        while (Vector3.Distance(t.position, p.position) >= 0.5f)
+
+                        {
+                            print("Target Position: " + t.position + "Waypoint position: " + p.position + "Path Position: " + posns[count]);
+
+                            t.position = Vector3.MoveTowards(t.position, p.position, 1f);
+                            yield return new WaitForSeconds(0.2f);
+                            pathToFollow = seeker.StartPath(t.position, p.position);
+                            yield return seeker.IsDone();
+                            posns = pathToFollow.vectorPath;
+                        }
+
                     }
+
                 }
 
                 //reverse point supplied here 1-5 reverse 5-1
@@ -96,19 +127,7 @@ public class PatrolBehaviour : MonoBehaviour
 
             }
         }
-        else
-        {
-            foreach (Transform pne in points)
-            {
-                while (Vector3.Distance(t.position, pne.position) > 0.5f)
-                {
-                    t.position = Vector3.MoveTowards(t.position, pne.position, 1f);
-                    /**/
-                    yield return new WaitForSeconds(0.2f);
-                }
-            }
-            yield return null;
-        }
+      
 
 
     }
