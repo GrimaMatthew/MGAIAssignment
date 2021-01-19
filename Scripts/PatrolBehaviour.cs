@@ -25,29 +25,34 @@ public class PatrolBehaviour : MonoBehaviour
 
         seeker = GetComponent<Seeker>();
 
-
-
-
-        pathToFollow = seeker.StartPath(transform.position, waypoint[1].position);
-
-
-
-
-        print("Transforms: " + transform.position + "Waypoints: " + waypoint[9].position);
-
      
 
-        StartCoroutine(updateGridGraph());
-
-        StartCoroutine(movePlayer());
-
-
+        StartCoroutine(pathing());
+    
 
     }
 
 
 
- 
+    IEnumerator pathing()
+    {
+        
+
+            pathToFollow = seeker.StartPath( transform.position, waypoint[1].position);
+
+
+        
+        
+        print("Transforms: " + transform.position + "Waypoints: "+waypoint[9].position);
+
+        yield return seeker.IsDone();
+
+        StartCoroutine(updateGridGraph());
+
+        StartCoroutine(movePlayer());
+
+   
+    }
 
 
     IEnumerator updateGridGraph()
@@ -110,7 +115,7 @@ public class PatrolBehaviour : MonoBehaviour
                         {
                             print("Target Position: " + t.position + "Waypoint position: " + p.position + "Path Position: " + posns[count]);
 
-                            t.position = Vector3.MoveTowards(t.position, p.position, 1f);
+                            t.position = Vector3.MoveTowards(posns[count], p.position, 1f);
                             yield return new WaitForSeconds(0.2f);
                             pathToFollow = seeker.StartPath(t.position, p.position);
                             yield return seeker.IsDone();
