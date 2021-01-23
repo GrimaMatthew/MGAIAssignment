@@ -38,7 +38,7 @@ public class PatrolBehaviour : MonoBehaviour
     {
         
 
-            pathToFollow = seeker.StartPath( transform.position, waypoint[1].position);
+         pathToFollow = seeker.StartPath( transform.position, waypoint[1].position);
 
 
         
