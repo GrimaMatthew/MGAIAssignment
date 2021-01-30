@@ -23,7 +23,7 @@ public class customMove : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Target").transform;
         
         print("Moveeeeeeee");
-        StartCoroutine(updateGridGraph()); // If User has button to insert more obstacles we need to update the path constantly 
+       // If User has button to insert more obstacles we need to update the path constantly 
 
         //Setting up the seeker which will find our path towards the enemy
         seeker = GetComponent<Seeker>(); 
@@ -31,6 +31,8 @@ public class customMove : MonoBehaviour
       
         //The path to follow between our AI and our Target is set here
         pathToFollow = seeker.StartPath(transform.position, target.position);
+
+        StartCoroutine(updateGridGraph());
 
 
         //The method moveTowardsEnemy will move our Ai toward the Enemy  using the path above
@@ -76,9 +78,9 @@ public class customMove : MonoBehaviour
                     pathToFollow = seeker.StartPath(t.position, target.position);//path is destoryed as the ai goes through it as otherswise the path will still be avialble
                                                                                  // and the ai will not stop it will follow the path back once it is completed.
                     yield return seeker.IsDone();// isDone check if the current path is done calculating
-                   
-                    
-                }
+                    posns = pathToFollow.vectorPath;
+                } 
+
                
             }
             yield return null;
