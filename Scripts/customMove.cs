@@ -32,7 +32,7 @@ public class customMove : MonoBehaviour
         //The path to follow between our AI and our Target is set here
         pathToFollow = seeker.StartPath(transform.position, target.position);
 
-        StartCoroutine(updateGridGraph());
+        
 
 
         //The method moveTowardsEnemy will move our Ai toward the Enemy  using the path above
